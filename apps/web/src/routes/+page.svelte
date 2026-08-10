@@ -1,7 +1,10 @@
 <script>
     import Heading from '$lib/components/Heading.svelte';
+    import Image from '$lib/components/Image.svelte';
+    import Link from '$lib/components/Link.svelte';
     import Meta from '$lib/components/Meta.svelte';
     import Paragraph from '$lib/components/Paragraph.svelte';
+    import Subheading from '$lib/components/Subheading.svelte';
 
     const Credits = [
         { id: 70315552, username: 'pizzaboxer', credit: 'Original creator and maintainer of the archive' },
@@ -17,47 +20,24 @@
 <article>
     <Heading>Welcome!</Heading>
     <Paragraph>
-        This is an archive of every Roblox set created until approximately June 2016, with some until November 2018. All the
-        data here was archived between May 22nd 2022 and June 1st 2022, with about 1.1 million sets archived.<br />
-        <br />
-        The user search only shows users that have owned at least one set, so if your user doesn't show up then you likely did not
-        own any sets. It has also only captured usernames during the archive period, so if you've changed your username you may need
-        to search for your past usernames.
-    </Paragraph>
+        This is a remake of <Link href="https://sets.pizzaboxer.xyz">pizzaboxer's Roblox Set Archive</Link>. You can find the <Link
+            href="https://github.com/pizzaboxer/roblox-set-archive">original source here</Link
+        >, and the <Link href="https://github.com/orisrightpaw/roblox-set-archive">source for this remake here</Link>. This text
+        is a work-in-progress.
 
-    <Heading>So, what are sets?</Heading>
-    <Paragraph>
-        Sets are a long-forgotten feature on Roblox that allowed users to create personal collections of public-domain models
-        and decals on the catalog. There was a publicly browsable catalog of them, and people could subscribe to sets made by
-        other people. Back then, sets were heavily integrated into the platform, with the system being used to power the Insert
-        tool, Stamper tool, and the Studio toolbox at the time.<br />
-        <br />
-        They were very widely used in the early 2010s from their initial introduction. However over time, Roblox's gradual shift
-        away from their identity as a brickbuilding sandbox game meant that the concept of sets became less relevant, and was eventually
-        abandoned.<br />
-        <br />
-        This website aims to document this history, and to provide another accessible look into what Roblox was like in the early
-        2010s.
-    </Paragraph>
-
-    <Heading>Sets of interest</Heading>
-    <Paragraph>
-        The sets used for the Insert tool are located under the Roblox account.<br />
-        <br />
-        The sets used for the Stamper tool are located under the usabilityman, usabilityman2 and happyhomeman accounts. Additionally,
-        there is a gametest stamper set under UsableMan.
-    </Paragraph>
-
-    <Heading>InsertService functionality</Heading>
-    <Paragraph>
-        The web handler at http://www.roblox.com/Game/Tools/InsertAsset.ashx was a LuaWebService XML endpoint that powered
-        relevant InsertService functions, and is now defunct. A compatible replacement is available here at
-        https://sets.starfall.wtf/Game/Tools/InsertAsset.ashx that you can redirect to if you wish to use this archive in older
-        clients.<br />
-        <br />
-        Examples: Base Sets / Roblox's Sets / Assets for the 'Parts' Set<br />
-        <br />
-        If you're looking for JSON endpoints to use in your own code, see the API that this website operates on.
+        <Subheading>What's Changed?</Subheading>
+        <p>
+            The backend API has been rewritten in Go, originally from ASP.NET Core 6. Why? I wanted to learn Go.<br />
+            The frontend has also been entirely rewritten, now in Svelte. (Distributed in source form, too!)<br />
+            <br />
+            Some <span class="font-bold">breaking API changes</span> have been introduced. All JSON endpoints now return keys
+            formatted in <tt>snake_case</tt>, instead of <tt>camelCase</tt>. Please update your project to reflect this when
+            switching to this instance.<br />
+            <br />
+            Furthermore, the original PostgreSQL database dump cannot be used anymore. You must drop all sequences from the database
+            before GORM can talk to it. I have no idea why it doesn't support these sequences, but it was easier to just drop them,
+            since the database should be read-only at this point.
+        </p>
     </Paragraph>
 
     <Heading>Archive Download</Heading>
@@ -76,12 +56,8 @@
     <div class="grid grid-cols-4 gap-4">
         {#each Credits as person}
             <div class="flex gap-3">
-                <img
-                    class="rounded-full outline outline-zinc-700 aspect-square h-24"
-                    src="https://sets.starfall.wtf/api/users/{person.id}/thumbnail"
-                    alt="{person.username}'s avatar"
-                />
-                <div class="my-auto">
+                <Image src="https://sets.starfall.wtf/api/users/{person.id}/thumbnail" alt="{person.username}'s avatar"></Image>
+                <div class="my-auto w-xl">
                     <a
                         class="font-semibold text-xl text-blue-400 hover:text-blue-300 transition-colors"
                         href="https://www.roblox.com/users/{person.id}/profile">{person.username}</a

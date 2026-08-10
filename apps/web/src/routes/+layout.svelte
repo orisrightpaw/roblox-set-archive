@@ -12,7 +12,7 @@
     <link rel="icon" href={favicon} />
 </svelte:head>
 
-<div class="container mx-auto px-32 min-h-screen">
+<div class="container mx-auto px-32 min-h-screen flex flex-col">
     <nav class="bg-zinc-800 text-xl p-4 rounded-b-xl">
         <div class="text-2xl font-semibold inline-block mr-2">
             <a href="/">
@@ -25,7 +25,7 @@
         <Navlink href="/users" name="Users"></Navlink>
     </nav>
 
-    <div class="my-5 px-4">
+    <div class="my-5 px-4 grow flex flex-col">
         {@render children()}
     </div>
 </div>

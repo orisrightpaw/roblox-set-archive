@@ -13,3 +13,7 @@ body {
     @apply text-zinc-100;
     @apply bg-zinc-900;
 }
+
+tt {
+    @apply text-red-300;
+}

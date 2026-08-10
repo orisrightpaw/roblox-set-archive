@@ -1,1 +1,26 @@
-// place files you want to import through the `$lib` alias in this folder.
+export interface User {
+    id: number;
+    user_name: string;
+}
+
+export interface AssetSet {
+    id?: number;
+    name: string;
+    description: string;
+    image_asset_id?: number;
+    image_asset_updated?: number;
+    creator_name: string;
+    creator_id?: number;
+    subscriber_count?: number;
+}
+
+export interface UserResponse extends User {
+    owned: AssetSet[];
+    subscribed: AssetSet[];
+}
+
+export interface PaginatedResult<T> {
+    pages: number;
+    total: number;
+    results: T[];
+}

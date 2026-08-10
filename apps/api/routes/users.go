@@ -48,6 +48,7 @@ func CreateUserRoutes(app *fiber.App) {
 
 		return c.JSON(fiber.Map{
 			"pages":   count / 24,
+			"total":   count,
 			"results": users,
 		})
 	})
@@ -65,7 +66,7 @@ func CreateUserRoutes(app *fiber.App) {
 			return fiber.ErrInternalServerError
 		}
 
-		owned, err := query.AssetSet.WithContext(c.RequestCtx()).Where(query.AssetSet.CreatorID.Eq(user.ID)).Find()
+		owned, err := query.AssetSet.WithContext(c.RequestCtx()).Where(query.AssetSet.CreatorID.Eq(user.ID)).Order(query.AssetSet.ID.Asc()).Find()
 		if err != nil {
 			return fiber.ErrInternalServerError
 		}
@@ -80,14 +81,14 @@ func CreateUserRoutes(app *fiber.App) {
 			subscribedSets[i] = int64(subscriptions[i].AssetSetID)
 		}
 
-		subscribed, err := query.AssetSet.WithContext(c.RequestCtx()).Where(query.AssetSet.ID.In(subscribedSets...), query.AssetSet.CreatorID.Neq(user.ID)).Find()
+		subscribed, err := query.AssetSet.WithContext(c.RequestCtx()).Where(query.AssetSet.ID.In(subscribedSets...), query.AssetSet.CreatorID.Neq(user.ID)).Order(query.AssetSet.ID.Asc()).Find()
 		if err != nil {
 			return fiber.ErrInternalServerError
 		}
 
 		return c.JSON(fiber.Map{
 			"id":         user.ID,
-			"username":   user.UserName,
+			"user_name":  user.UserName,
 			"owned":      owned,
 			"subscribed": subscribed,
 		})
