@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+
+@font-face {
+    font-family: 'Outfit';
+    font-style: normal;
+    font-weight: 100 900;
+    src: url('/fonts/Outfit/Outfit-VariableFont_wght.ttf');
+}
+
+html,
+body {
+    font-family: 'Outfit', sans-serif;
+    @apply text-zinc-100;
+    @apply bg-zinc-900;
+}
