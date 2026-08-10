@@ -9,5 +9,5 @@
 </script>
 
 <div class="inline-block mx-2">
-    <a class="transition-colors {active ? 'text-zinc-100 underline' : 'text-zinc-400 hover:text-zinc-300'}" {href}>{name}</a>
+    <a class="transition-colors {active ? 'text-zinc-100' : 'text-zinc-400 hover:text-zinc-300'}" {href}>{name}</a>
 </div>
