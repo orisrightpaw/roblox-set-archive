@@ -9,12 +9,11 @@
     let { data } = $props();
 </script>
 
-<Meta title="{data.user?.user_name!}'s Sets" />
-
 {#if data.user}
+    <Meta title="{data.user?.user_name!}'s Sets" />
+
     <div class="flex flex-col gap-4">
         <div class=" flex gap-4">
-            <!--  -->
             <div class="w-48">
                 <Image src="https://sets.starfall.wtf/api/users/{data.user.id}/thumbnail"></Image>
             </div>
@@ -57,7 +56,16 @@
             </div>
         </div>
     </div>
+{:else if data.limited}
+    <Meta title="Rate Limited" />
+
+    <div class="w-fit m-auto text-center text-zinc-400">
+        <p class="text-3xl mt-2"><i class="ri-slow-down-line"></i> Rate Limited</p>
+        <p class="text-lg">Slow down! You're sending too many requests.</p>
+    </div>
 {:else}
+    <Meta title="Not Found" />
+
     <div class="w-fit m-auto text-center text-zinc-400">
         <p class="text-3xl mt-2"><i class="ri-question-line"></i> Not Found</p>
         <p class="text-lg">That user was not found in the database.</p>

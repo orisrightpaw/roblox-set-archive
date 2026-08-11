@@ -6,7 +6,7 @@
     let { set }: { set: AssetSet } = $props();
 </script>
 
-<div>
+<div class="truncate text-blue-400 hover:text-blue-300">
     <a class="group" href="/sets/{set.id}">
         <Image src="https://web.archive.org/web/0im_/https://assetdelivery.roblox.com/v1/asset?id={set.image_asset_id}"></Image>
         <Link href="/sets/{set.id}">

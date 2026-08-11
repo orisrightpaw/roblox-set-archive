@@ -26,7 +26,7 @@ func CreateSetsRoutes(app *fiber.App) {
 			return fiber.ErrBadRequest
 		}
 
-		q := query.AssetSet.WithContext(c.RequestCtx())
+		q := query.AssetSet.WithContext(c.Context())
 
 		if search.Keyword != "" {
 			q = q.Where(query.AssetSet.Name.Like("%" + search.Keyword + "%"))
@@ -59,7 +59,7 @@ func CreateSetsRoutes(app *fiber.App) {
 			return fiber.ErrBadRequest
 		}
 
-		set, err := query.AssetSet.WithContext(c.RequestCtx()).Where(query.AssetSet.ID.Eq(setQuery.ID)).First()
+		set, err := query.AssetSet.WithContext(c.Context()).Where(query.AssetSet.ID.Eq(setQuery.ID)).First()
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return fiber.ErrNotFound
 		} else if err != nil {

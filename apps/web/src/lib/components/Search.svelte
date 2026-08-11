@@ -18,10 +18,20 @@
     let pages = $state(0);
     let total = $state(0);
     let results: any[] = $state([]);
+    let limited = $state(false);
 
-    async function search(k: string, p: number) {
-        const response = await fetch(`${endpoint}?keyword=${k}&page=${p}`);
-        if (!response.ok) return;
+    async function search() {
+        if (limited) return;
+
+        const response = await fetch(`${endpoint}?keyword=${keyword}&page=${page}`);
+        if (response.status === 429) {
+            limited = true;
+            setTimeout(() => {
+                limited = false;
+                search();
+            }, 15_000);
+            return;
+        } else if (!response.ok) return;
 
         const body = (await response.json()) as PaginatedResult<any>;
 
@@ -30,30 +40,33 @@
         results = body.results;
     }
 
-    onMount(() => search('', 0));
-
-    $effect(() => {
-        search(keyword, page);
-    });
+    onMount(() => search());
 </script>
 
-<form class="flex w-full gap-2 mb-4">
+<form class="flex w-full gap-2 mb-4" onsubmit={() => search()}>
     <input class="rounded-md border border-zinc-700 text-lg grow p-2" type="text" {placeholder} bind:value={keyword} />
     <button class="bg-zinc-800 rounded-lg px-4 cursor-pointer" title="Search">
         <i class="ri-search-line"></i>
     </button>
 </form>
 
-<div class="grid grid-cols-8 gap-4 mb-4">
-    {#each results as result}
-        {@render snippet(result)}
-    {/each}
-</div>
-
-<div class="w-full flex">
-    <div>
-        <p class="text-sm text-zinc-400">
-            Showing {(page * 24 + 1).toLocaleString()} to {((page + 1) * 24).toLocaleString()} of {total.toLocaleString()} results
-        </p>
+{#if !limited}
+    <div class="grid grid-cols-8 gap-4 mb-4">
+        {#each results as result}
+            {@render snippet(result)}
+        {/each}
     </div>
-</div>
+
+    <div class="w-full flex">
+        <div>
+            <p class="text-sm text-zinc-400">
+                Showing {(page * 24 + 1).toLocaleString()} to {((page + 1) * 24).toLocaleString()} of {total.toLocaleString()} results
+            </p>
+        </div>
+    </div>
+{:else}
+    <div class="w-fit m-auto text-center text-zinc-400">
+        <p class="text-3xl mt-2"><i class="ri-slow-down-line"></i> Rate Limited</p>
+        <p class="text-lg">Slow down! You're sending too many requests.</p>
+    </div>
+{/if}

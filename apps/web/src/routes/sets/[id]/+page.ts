@@ -1,8 +1,9 @@
-import type { AssetSet } from '$lib';
+import { API_HOST, type AssetSet } from '$lib';
 
 export async function load({ params, fetch }) {
-    const request = await fetch(`http://127.0.0.1:3000/api/sets/${params.id}`);
-    if (!request.ok) return { user: null };
+    const request = await fetch(`${API_HOST}/api/sets/${params.id}`);
+    if (request.status === 429) return { set: null, limited: true };
+    else if (!request.ok) return { set: null };
 
     const body = (await request.json()) as AssetSet;
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { API_HOST } from '$lib';
     import Meta from '$lib/components/Meta.svelte';
     import Search from '$lib/components/Search.svelte';
     import User from '$lib/components/User.svelte';
@@ -10,4 +11,4 @@
     <User user={result}></User>
 {/snippet}
 
-<Search endpoint={'http://127.0.0.1:3000/api/users/search'} placeholder={'Search Users'} snippet={UserSnippet}></Search>
+<Search endpoint="{API_HOST}/api/users/search" placeholder="Search Users" snippet={UserSnippet}></Search>

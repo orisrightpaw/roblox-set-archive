@@ -1,3 +1,5 @@
+import { dev } from '$app/env';
+
 export interface User {
     id: number;
     user_name: string;
@@ -24,3 +26,5 @@ export interface PaginatedResult<T> {
     total: number;
     results: T[];
 }
+
+export const API_HOST = dev ? 'http://127.0.0.1:3000' : '';

@@ -26,7 +26,7 @@ func CreateUserRoutes(app *fiber.App) {
 			return fiber.ErrBadRequest
 		}
 
-		q := query.User.WithContext(c.RequestCtx())
+		q := query.User.WithContext(c.Context())
 
 		if search.Keyword != "" {
 			q = q.Where(query.User.UserName.Like("%" + search.Keyword + "%"))
@@ -59,19 +59,19 @@ func CreateUserRoutes(app *fiber.App) {
 			return fiber.ErrBadRequest
 		}
 
-		user, err := query.User.WithContext(c.RequestCtx()).Where(query.User.ID.Eq(userQuery.ID)).First()
+		user, err := query.User.WithContext(c.Context()).Where(query.User.ID.Eq(userQuery.ID)).First()
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return fiber.ErrNotFound
 		} else if err != nil {
 			return fiber.ErrInternalServerError
 		}
 
-		owned, err := query.AssetSet.WithContext(c.RequestCtx()).Where(query.AssetSet.CreatorID.Eq(user.ID)).Order(query.AssetSet.ID.Asc()).Find()
+		owned, err := query.AssetSet.WithContext(c.Context()).Where(query.AssetSet.CreatorID.Eq(user.ID)).Order(query.AssetSet.ID.Asc()).Find()
 		if err != nil {
 			return fiber.ErrInternalServerError
 		}
 
-		subscriptions, err := query.Subscriber.WithContext(c.RequestCtx()).Where(query.Subscriber.UserID.Eq(user.ID)).Find()
+		subscriptions, err := query.Subscriber.WithContext(c.Context()).Where(query.Subscriber.UserID.Eq(user.ID)).Find()
 		if err != nil {
 			return fiber.ErrInternalServerError
 		}
@@ -81,7 +81,7 @@ func CreateUserRoutes(app *fiber.App) {
 			subscribedSets[i] = int64(subscriptions[i].AssetSetID)
 		}
 
-		subscribed, err := query.AssetSet.WithContext(c.RequestCtx()).Where(query.AssetSet.ID.In(subscribedSets...), query.AssetSet.CreatorID.Neq(user.ID)).Order(query.AssetSet.ID.Asc()).Find()
+		subscribed, err := query.AssetSet.WithContext(c.Context()).Where(query.AssetSet.ID.In(subscribedSets...), query.AssetSet.CreatorID.Neq(user.ID)).Order(query.AssetSet.ID.Asc()).Find()
 		if err != nil {
 			return fiber.ErrInternalServerError
 		}

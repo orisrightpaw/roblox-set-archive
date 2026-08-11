@@ -5,9 +5,11 @@ import (
 	"orisrightpaw/roblox-set-archive/internal/dal/query"
 	"orisrightpaw/roblox-set-archive/routes"
 	"os"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
+	"github.com/gofiber/fiber/v3/middleware/limiter"
 	"github.com/gofiber/fiber/v3/middleware/logger"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -39,6 +41,9 @@ func main() {
 	})
 
 	app.Use(logger.New())
+	app.Use(limiter.New(limiter.Config{
+		Expiration: 1 * time.Second,
+	}))
 
 	routes.CreateAssetsRoutes(app)
 	routes.CreateSetsRoutes(app)

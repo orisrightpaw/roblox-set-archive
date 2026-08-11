@@ -4,14 +4,13 @@
     import Image from '$lib/components/Image.svelte';
     import Link from '$lib/components/Link.svelte';
     import Meta from '$lib/components/Meta.svelte';
-    import Set from '$lib/components/Set.svelte';
 
     let { data } = $props();
 </script>
 
-<Meta title="{data.set?.name!}, a Set by {data.set?.creator_name!}" />
-
 {#if data.set}
+    <Meta title="{data.set?.name!}, a Set by {data.set?.creator_name!}" />
+
     <div class="flex flex-col gap-4">
         <div class="flex gap-4">
             <div class="w-48">
@@ -39,7 +38,16 @@
             </div>
         </div>
     </div>
+{:else if data.limited}
+    <Meta title="Rate Limited" />
+
+    <div class="w-fit m-auto text-center text-zinc-400">
+        <p class="text-3xl mt-2"><i class="ri-slow-down-line"></i> Rate Limited</p>
+        <p class="text-lg">Slow down! You're sending too many requests.</p>
+    </div>
 {:else}
+    <Meta title="Not Found" />
+
     <div class="w-fit m-auto text-center text-zinc-400">
         <p class="text-3xl mt-2"><i class="ri-question-line"></i> Not Found</p>
         <p class="text-lg">That set was not found in the database.</p>

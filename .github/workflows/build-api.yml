@@ -1,0 +1,50 @@
+name: Build API
+
+on:
+    workflow_dispatch:
+    push:
+        branches: ['main']
+
+permissions:
+    contents: read
+    packages: write
+
+jobs:
+    docker:
+        runs-on: ubuntu-24.04
+
+        steps:
+            - uses: actions/checkout@v6
+
+            - name: Compute image name
+              id: image
+              run: |
+                  owner="$(echo "${{ vars.CONTAINER_REGISTRY_OWNER || github.repository_owner }}" | tr '[:upper:]' '[:lower:]')"
+                  image_tag="api-latest"
+                  echo "owner=$owner" >> "$GITHUB_OUTPUT"
+                  echo "image=ghcr.io/$owner/roblox-set-archive" >> "$GITHUB_OUTPUT"
+                  echo "image_tag=$image_tag" >> "$GITHUB_OUTPUT"
+
+            - name: Extract Docker metadata
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+                  images: ${{ steps.image.outputs.image }}
+                  tags: |
+                      type=raw,value=${{ steps.image.outputs.image_tag }}
+
+            - name: Login to GHCR
+              uses: docker/login-action@v3
+              with:
+                  registry: ghcr.io
+                  username: ${{ secrets.GHCR_USERNAME || github.actor }}
+                  password: ${{ secrets.GHCR_TOKEN || secrets.GITHUB_TOKEN }}
+
+            - name: Build and push image
+              uses: docker/build-push-action@v6
+              with:
+                  context: ./apps/api
+                  file: ./Dockerfile
+                  push: true
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}

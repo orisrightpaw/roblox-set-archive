@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { API_HOST } from '$lib';
     import Meta from '$lib/components/Meta.svelte';
     import Search from '$lib/components/Search.svelte';
     import Set from '$lib/components/Set.svelte';
@@ -10,4 +11,4 @@
     <Set set={result}></Set>
 {/snippet}
 
-<Search endpoint={'http://127.0.0.1:3000/api/sets/search'} placeholder={'Search Sets'} snippet={AssetSet}></Search>
+<Search endpoint="{API_HOST}/api/sets/search" placeholder="Search Sets" snippet={AssetSet}></Search>
