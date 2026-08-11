@@ -1,6 +1,6 @@
 services:
     web:
-        image: ghcr.io/orisrightpaw/roblox-set-archive:web-latest
+        image: ghcr.io/orisrightpaw/roblox-set-archive:web
         restart: unless-stopped
         depends_on:
             - api
@@ -9,7 +9,7 @@ services:
         networks:
             - default
     api:
-        image: ghcr.io/orisrightpaw/roblox-set-archive:api-latest
+        image: ghcr.io/orisrightpaw/roblox-set-archive:api
         restart: unless-stopped
         depends_on:
             - database

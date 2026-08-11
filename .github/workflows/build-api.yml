@@ -20,7 +20,7 @@ jobs:
               id: image
               run: |
                   owner="$(echo "${{ vars.CONTAINER_REGISTRY_OWNER || github.repository_owner }}" | tr '[:upper:]' '[:lower:]')"
-                  image_tag="api-latest"
+                  image_tag="api"
                   echo "owner=$owner" >> "$GITHUB_OUTPUT"
                   echo "image=ghcr.io/$owner/roblox-set-archive" >> "$GITHUB_OUTPUT"
                   echo "image_tag=$image_tag" >> "$GITHUB_OUTPUT"
