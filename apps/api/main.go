@@ -37,7 +37,7 @@ func main() {
 	query.SetDefault(db)
 
 	app := fiber.New(fiber.Config{
-		StructValidator: &structValidator{validate: validator.New()},
+		StructValidator: &structValidator{validate: validator.New(validator.WithRequiredStructEnabled())},
 	})
 
 	app.Use(logger.New())
